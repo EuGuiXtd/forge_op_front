@@ -1,0 +1,12 @@
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column wrap;
+}
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-flow: row wrap;
+}
