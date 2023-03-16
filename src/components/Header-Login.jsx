@@ -1,8 +1,13 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React/* , { useContext, useState } */ from 'react';
 import '../styles/components/Header-Login.css';
+import { useHistory } from 'react-router-dom';
 
 function Header() {
+  const history = useHistory();
+  const handleClick = (pathName) => {
+    history.push(`/${pathName}`);
+  };
   return (
     <body>
       <div className="caixa__login">
@@ -19,7 +24,7 @@ function Header() {
           <button>
             Entrar
           </button>
-          <button>
+          <button onClick={ () => { handleClick('cadastro'); } }>
             Cadastro
           </button>
         </form>
@@ -27,5 +32,4 @@ function Header() {
     </body>
   );
 }
-
 export default Header;
