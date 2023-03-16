@@ -1,8 +1,9 @@
+/* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { /* useContext, */ useState } from 'react';
+import React, { /* useContext, */ useState, useEffect } from 'react';
 import '../styles/components/Header-Cadastro.css';
 import { useHistory } from 'react-router-dom';
-import { requestLogin, setToken } from '../services/request';
+import { requestRegister, setToken } from '../services/request';
 
 function Header() {
   const history = useHistory();
@@ -17,7 +18,9 @@ function Header() {
 
   const [user, setUser] = useState('');
 
-  const [isLogged, setIsLogged] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
+
+  const [failedTryRegister, setFailedTryRegister] = useState(false);
 
   const handleEmail = ({ target }) => {
     setEmail(target.value);
@@ -48,19 +51,23 @@ function Header() {
     event.preventDefault();
 
     try {
-      const { token } = await requestLogin('/register', { email, password, user });
+      const { token } = await requestRegister('/register', { email, password, user });
 
       setToken(token);
 
       localStorage.setItem('token', token);
 
-      setIsLogged(true);
+      setIsRegister(true);
     } catch (error) {
-      console.log(error);
+      setFailedTryRegister(true);
+      setIsRegister(false);
     }
   };
+  useEffect(() => {
+    setFailedTryRegister(false);
+  }, [email, password, user]);
 
-  if (isLogged) return redirect('home');
+  if (isRegister) return redirect('home');
   return (
     <body>
       <div className="caixa__login">
@@ -96,6 +103,15 @@ function Header() {
             />
             <label>Senha</label>
           </div>
+          {
+            (failedTryRegister)
+              ? (
+                <p className="error">
+                  O endereço de e-mail ja possui cadastro.
+                </p>
+              )
+              : null
+          }
           <button
             onClick={ (event) => login(event) }
             disabled={ formValidation() }
