@@ -1,9 +1,10 @@
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { /* useContext, */ useState, useEffect } from 'react';
+import React, { /*  useContext, */ useState, useEffect } from 'react';
 import '../styles/components/Header-Cadastro.css';
 import { useHistory } from 'react-router-dom';
 import { requestRegister, setToken } from '../services/request';
+/* import TokenContext from '../context/token.context'; */
 
 function Header() {
   const history = useHistory();
@@ -13,6 +14,8 @@ function Header() {
   };
 
   const [email, setEmail] = useState('');
+
+  /*  const { setJwt } = useContext(TokenContext); */
 
   const [password, setPassword] = useState('');
 
@@ -47,11 +50,11 @@ function Header() {
       || email === '');
   };
 
-  const login = async (event) => {
+  const register = async (event) => {
     event.preventDefault();
 
     try {
-      const { token } = await requestRegister('/register', { email, password, user });
+      const { token } = await requestRegister({ email, password, user });
 
       setToken(token);
 
@@ -113,7 +116,7 @@ function Header() {
               : null
           }
           <button
-            onClick={ (event) => login(event) }
+            onClick={ (event) => register(event) }
             disabled={ formValidation() }
           >
             Cadastrar
