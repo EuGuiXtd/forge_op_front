@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { /* useContext, */ useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import '../styles/components/Header-Login.css';
 import { useHistory } from 'react-router-dom';
 import { requestLogin, setToken } from '../services/request';
-/* import TokenContext from '../context/token.context'; */
+import TokenContext from '../context/token.context';
 
 function Header() {
   const history = useHistory();
@@ -12,7 +12,7 @@ function Header() {
     history.push(`/${pathName}`);
   };
 
-  /* const { setJwt } = useContext(TokenContext); */
+  const { setJwt } = useContext(TokenContext);
 
   const [email, setEmail] = useState('');
 
@@ -37,9 +37,7 @@ function Header() {
       const { token } = await requestLogin({ email, password });
 
       setToken(token);
-
-      localStorage.setItem('token', token);
-      /*  setJwt(token); */
+      setJwt(token);
 
       setIsLoged(true);
     } catch (error) {

@@ -1,10 +1,9 @@
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { /*  useContext, */ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/components/Header-Cadastro.css';
 import { useHistory } from 'react-router-dom';
-import { requestRegister, setToken } from '../services/request';
-/* import TokenContext from '../context/token.context'; */
+import { requestRegister } from '../services/request';
 
 function Header() {
   const history = useHistory();
@@ -14,8 +13,6 @@ function Header() {
   };
 
   const [email, setEmail] = useState('');
-
-  /*  const { setJwt } = useContext(TokenContext); */
 
   const [password, setPassword] = useState('');
 
@@ -54,11 +51,7 @@ function Header() {
     event.preventDefault();
 
     try {
-      const { token } = await requestRegister({ email, password, user });
-
-      setToken(token);
-
-      localStorage.setItem('token', token);
+      await requestRegister({ email, password, user });
 
       setIsRegister(true);
     } catch (error) {
@@ -70,7 +63,7 @@ function Header() {
     setFailedTryRegister(false);
   }, [email, password, user]);
 
-  if (isRegister) return redirect('home');
+  if (isRegister) return redirect('');
   return (
     <body>
       <div className="caixa__login">
